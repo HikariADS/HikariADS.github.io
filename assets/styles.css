@@ -242,7 +242,7 @@ body.matrix-theme .social-link.email:hover {
     background: rgba(236, 72, 153, 0.1);
     padding: 8px 16px;
     border-radius: 20px;
-    border: 2px solid #ec4899;
+    border: 2px solid #ed7037;
 }
 
 .time-display {
@@ -260,7 +260,7 @@ body.matrix-theme .social-link.email:hover {
 }
 
 .highlight {
-    color: #ec4899;
+    color: #ed7037;
     font-weight: 600;
 }
 
@@ -282,7 +282,7 @@ body.matrix-theme .social-link.email:hover {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 3px solid #ec4899;
+    border: 3px solid #ed7037;
     object-fit: cover;
     box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
 }
@@ -306,7 +306,7 @@ body.matrix-theme .social-link.email:hover {
 }
 
 .status-text {
-    color: #ec4899;
+    color: #ed7037;
     font-weight: 500;
     opacity: 0.7;
 }
@@ -466,7 +466,7 @@ body.matrix-theme .social-link.email:hover {
     align-items: center;
     justify-content: center;
     font-size: 2.5rem;
-    color: #ec4899;
+    color: #ed7037;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -738,7 +738,7 @@ body.matrix-theme .social-link.email:hover {
 /* Dynamic Text Animation - Typewriter Effect */
 .dynamic-text {
     display: inline-block;
-    color: #ec4899;
+    color: #ed7037;
     font-weight: 600;
     background-color: #fef3c7;
     padding: 2px 6px;
@@ -752,7 +752,7 @@ body.matrix-theme .social-link.email:hover {
 /* Typewriter cursor effect */
 .dynamic-text::after {
     content: '|';
-    color: #ec4899;
+    color: #ed7037;
     animation: blink 1s infinite;
     font-weight: normal;
 }
@@ -772,7 +772,7 @@ body.matrix-theme .social-link.email:hover {
 .divider {
     width: 100%;
     height: 3px;
-    background: #ec4899;
+    background: #ed7037;
     margin: 20px 0;
     border: none;
     border-radius: 2px;
@@ -781,7 +781,19 @@ body.matrix-theme .social-link.email:hover {
 
 .divider.thick {
     height: 3px;
-    background: linear-gradient(90deg, transparent, #ec4899, #f59e0b, #ec4899, transparent);
+    background: linear-gradient(90deg, transparent, #ed7037, #ed7037, #ed7037, transparent);
     box-shadow: 0 3px 12px rgba(236, 72, 153, 0.4);
     margin: 20px 0;
+}
+/* 🎥 Background Video */
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* Giúp video đầy màn hình mà không méo */
+    z-index: -2;            /* Nằm dưới canvas và nội dung */
+    filter: brightness(1);/* Làm tối video để text dễ đọc hơn */
+    pointer-events: none;   /* Không cản click chuột */
 }
