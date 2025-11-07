@@ -224,4 +224,65 @@ document.addEventListener('DOMContentLoaded', () => {
     new DiscordPresence('949681622825975868');
 });
 
+const DISCORD_ID = "949681622825975868"; // 🔹 Thay bằng ID Discord thật của bạn
+
+async function updatePresence() {
+  try {
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+    const { data } = await res.json();
+
+    const card = document.getElementById("activity-card");
+    const cover = document.getElementById("cover");
+    const platform = document.getElementById("platform");
+    const title = document.getElementById("title");
+    const artist = document.getElementById("artist");
+    const progress = document.getElementById("progress");
+
+    if (!card) return; // tránh lỗi nếu chưa có phần tử trong DOM
+
+    // Nếu đang nghe Spotify
+    if (data.listening_to_spotify) {
+      platform.textContent = "Listening to Spotify";
+      title.textContent = data.spotify.song;
+      artist.textContent = `${data.spotify.artist}`;
+      cover.src = data.spotify.album_art_url;
+
+      const start = data.spotify.timestamps.start;
+      const end = data.spotify.timestamps.end;
+      const now = Date.now();
+      const percent = ((now - start) / (end - start)) * 100;
+      progress.style.width = `${percent}%`;
+    }
+    // Nếu đang dùng app khác (VD: VSCode)
+    else if (data.activities.length > 0) {
+      const vscode = data.activities.find(a => a.name === "Visual Studio Code");
+      if (vscode) {
+        platform.textContent = "Using Visual Studio Code";
+        title.textContent = vscode.details || "Editing project";
+        artist.textContent = vscode.state || "";
+        cover.src = "https://code.visualstudio.com/assets/images/code-stable.png";
+        progress.style.width = "100%";
+      } else {
+        platform.textContent = "Online on Discord";
+        title.textContent = "";
+        artist.textContent = "";
+        cover.src = "https://cdn-icons-png.flaticon.com/512/906/906361.png";
+        progress.style.width = "0%";
+      }
+    } else {
+      platform.textContent = "Offline";
+      title.textContent = "";
+      artist.textContent = "";
+      cover.src = "https://cdn-icons-png.flaticon.com/512/906/906361.png";
+      progress.style.width = "0%";
+    }
+  } catch (error) {
+    console.error("Lỗi khi tải Discord presence:", error);
+  }
+}
+
+// cập nhật mỗi 15 giây
+updatePresence();
+setInterval(updatePresence, 15000);
+
 window.DiscordPresence = DiscordPresence;

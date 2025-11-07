@@ -14,7 +14,9 @@ body {
     overflow-x: hidden;
     overflow-y: hidden;
 }
-
+p{
+    font-size: 20px;
+}
 /* Animated background canvas */
 #bg-canvas {
     position: fixed !important;
@@ -261,6 +263,7 @@ body.matrix-theme .social-link.email:hover {
 
 .highlight {
     color: #ed7037;
+    font-size: 20px;
     font-weight: 600;
 }
 
@@ -300,12 +303,13 @@ body.matrix-theme .social-link.email:hover {
 }
 
 .status-section p {
-    font-size: 1rem;
+    font-size: 20px;    
     color: #4b5563;
     margin: 0;
 }
 
 .status-text {
+    font-size: 20px;
     color: #ed7037;
     font-weight: 500;
     opacity: 0.7;
@@ -797,3 +801,128 @@ body.matrix-theme .social-link.email:hover {
     filter: brightness(1);/* Làm tối video để text dễ đọc hơn */
     pointer-events: none;   /* Không cản click chuột */
 }
+/* Responsive Design for Playlists */
+@media (max-width: 768px) {
+    .playlists-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
+#bg-canvas,
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* vẫn ở nền dưới */
+  pointer-events: none; /* không chặn cuộn hay click */
+}
+
+body {
+  overflow-y: auto;   /* cho phép cuộn */
+  height: auto;
+  min-height: 100vh;
+}
+/* ========== Activity Card (Spotify / Discord / VSCode) ========== */
+.spotify-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+
+  /* vị trí canh giữa */
+  margin: 20px auto;
+  width: 480px;
+  max-width: 90%;
+
+  /* hiệu ứng glassmorphism trong suốt */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+
+  /* style khung */
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+
+  /* chữ */
+  color: #ea7a24;
+  font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+  padding: 18px 22px;
+  text-align: left;
+  transition: all 0.3s ease-in-out;
+}
+
+.spotify-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 105, 180, 0.25);
+}
+
+.spotify-card img {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.spotify-card .info {
+  flex: 1;
+}
+
+.spotify-card .header {
+    font-size: 18px;            /* to hơn */
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ff4b91, #ffb347, #00ffff, #ff4b91);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 400%;
+  animation: rgbText 6s linear infinite;
+}
+
+.spotify-card .title {
+ font-size: 18px; /* to hơn */
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff4b91, #ffb347, #00ffff, #ff4b91);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 400%;
+  animation: rgbText 5s linear infinite;
+}
+
+.spotify-card .artist {
+font-size: 13px; /* to hơn */
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff4b91, #ffb347, #00ffff, #ff4b91);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 400%;
+  animation: rgbText 5s linear infinite;
+}
+
+.progress-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4b91, #ffb6c1);
+  width: 0%;
+  transition: width 0.4s linear;
+}
+@keyframes rgbText {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
