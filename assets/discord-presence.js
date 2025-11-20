@@ -1,7 +1,7 @@
 /**
  * Discord Presence using Lanyard WebSocket API
  * Author: Quang (HikariADS)
- * Integrated realtime presence with Synced Lyrics (Independent Scrolling Fixed)
+ * Integrated realtime presence with Synced Lyrics (Fixed Center Scrolling)
  */
 
 class DiscordPresence {
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 🎵 SPOTIFY SYNCED LYRICS LOGIC (FIXED)
+// 🎵 SPOTIFY SYNCED LYRICS LOGIC
 // ==========================================
 
 let currentTrackID = "";
@@ -115,6 +115,7 @@ let lastActiveIndex = -1;
 function handleSpotifyUpdate(data) {
     const lyricsContainer = document.getElementById("lyrics-container");
 
+    // Nếu không nghe nhạc
     if (!data.listening_to_spotify) {
         if (lyricsContainer) lyricsContainer.style.display = "none";
         cancelAnimationFrame(animationFrameId);
@@ -126,12 +127,14 @@ function handleSpotifyUpdate(data) {
     updateCardContent(spotify);
     songStartTime = spotify.timestamps.start;
 
+    // Nếu đổi bài hát -> Gọi API lấy Lyrics mới
     if (currentTrackID !== spotify.track_id) {
         currentTrackID = spotify.track_id;
-        lastActiveIndex = -1;
+        lastActiveIndex = -1; // Reset trạng thái
         fetchLyrics(spotify.song, spotify.artist);
     }
 
+    // Bắt đầu vòng lặp sync nếu chưa chạy
     if (!animationFrameId) {
         syncLoop(); 
     }
@@ -264,32 +267,35 @@ function syncLoop() {
     animationFrameId = requestAnimationFrame(syncLoop);
 }
 
-// 🟢 HÀM QUAN TRỌNG ĐÃ ĐƯỢC SỬA ĐỔI
+// 🟢 HÀM QUAN TRỌNG: CĂN GIỮA CHÍNH XÁC TUYỆT ĐỐI
 function highlightLine(index) {
-    // Xóa class active ở dòng cũ
+    // 1. Xóa active cũ
     const prevActive = document.querySelector(".lyric-line.active");
     if (prevActive) prevActive.classList.remove("active");
 
-    // Lấy dòng mới và container
+    // 2. Lấy dòng mới và container
     const currentLine = document.getElementById(`line-${index}`);
     const container = document.getElementById("lyrics-content");
 
     if (currentLine && container) {
         currentLine.classList.add("active");
         
-        // --- LOGIC CUỘN MỚI ---
-        // Thay vì dùng scrollIntoView (ảnh hưởng cả trang), ta dùng container.scrollTo
+        // 3. LOGIC TÍNH TOÁN MỚI (Dùng tọa độ màn hình - Bất chấp CSS)
         
-        // Tính toán vị trí dòng chữ so với container
-        const offset = currentLine.offsetTop - container.offsetTop;
-        
-        // Tính vị trí để dòng chữ nằm giữa container
-        // (Vị trí dòng - một nửa chiều cao container + một nửa chiều cao dòng)
-        const centerPosition = offset - (container.clientHeight / 2) + (currentLine.clientHeight / 2);
+        // Lấy vị trí hình học của dòng hát và khung chứa
+        const lineRect = currentLine.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
 
-        // Chỉ cuộn thằng container thôi
+        // Tính khoảng cách từ đỉnh dòng hát đến đỉnh khung chứa
+        const relativeOffset = lineRect.top - containerRect.top;
+
+        // Tính toán vị trí cần cuộn tới:
+        // Scroll hiện tại + Khoảng cách lệch - (Một nửa chiều cao khung) + (Một nửa chiều cao dòng)
+        const targetScrollTop = container.scrollTop + relativeOffset - (container.clientHeight / 2) + (currentLine.clientHeight / 2);
+
+        // 4. Thực hiện cuộn
         container.scrollTo({
-            top: centerPosition,
+            top: targetScrollTop,
             behavior: 'smooth'
         });
     }

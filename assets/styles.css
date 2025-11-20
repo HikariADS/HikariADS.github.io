@@ -73,9 +73,6 @@ p{
     z-index: 2;
 }
 
-
-
-
 .profile-avatar .discord-avatar:hover {
     transform: scale(1.05);
 }
@@ -912,6 +909,7 @@ font-size: 13px; /* to hơn */
 #lyrics-content {
     flex-grow: 1;
     overflow-y: auto;
+    position: relative;
     padding: 0 10px;
     mask-image: linear-gradient(transparent 0%, black 20%, black 80%, transparent 100%);
     -webkit-mask-image: linear-gradient(transparent 0%, black 20%, black 80%, transparent 100%);
