@@ -1,24 +1,20 @@
 /**
  * Discord Presence using Lanyard WebSocket API
  * Author: Quang (HikariADS)
- * Integrated realtime presence with optional backend proxy
+ * Integrated realtime presence with Synced Lyrics (Independent Scrolling Fixed)
  */
 
 class DiscordPresence {
     constructor(userId = '949681622825975868') {
         this.userId = userId;
-        this.wsUrl = 'wss://api.lanyard.rest/socket'; // ✅ Lanyard WS (public, realtime)
-        this.proxyUrl = ''; // optional: set to your backend if you use a proxy (Cách 2)
+        this.wsUrl = 'wss://api.lanyard.rest/socket';
         this.ws = null;
         this.heartbeatInterval = null;
-        this.reconnectTimeout = null;
         this.reconnectAttempts = 0;
-        this.maxReconnectAttempts = 5;
 
         this.elements = {
             connectionStatus: document.getElementById('connectionStatus'),
             userAvatar: document.getElementById('userAvatar'),
-            username: document.getElementById('username'),
             statusText: document.querySelector('.status-text'),
             statusIndicator: document.getElementById('statusIndicator'),
             activitiesContainer: document.getElementById('activities')
@@ -37,253 +33,266 @@ class DiscordPresence {
             this.elements.connectionStatus.className = `connection-status ${status}`;
             this.elements.connectionStatus.textContent = message;
             this.elements.connectionStatus.style.display = 'block';
-
-            if (status === 'connected') {
-                setTimeout(() => {
-                    this.elements.connectionStatus.style.display = 'none';
-                }, 3000);
-            }
+            if (status === 'connected') setTimeout(() => { this.elements.connectionStatus.style.display = 'none'; }, 3000);
         }
     }
 
     connectWebSocket() {
-        this.updateConnectionStatus('connecting', 'Connecting to Discord...');
-
+        this.updateConnectionStatus('connecting', 'Connecting...');
         try {
             this.ws = new WebSocket(this.wsUrl);
-
             this.ws.onopen = () => {
-                console.log('✅ Connected to Lanyard WebSocket');
+                console.log('✅ Connected to Lanyard');
                 this.subscribeToUser();
             };
-
             this.ws.onmessage = (event) => this.handleMessage(event);
             this.ws.onclose = () => this.reconnect();
-            this.ws.onerror = (err) => {
-                console.error('❌ WS Error:', err);
-                this.reconnect();
-            };
-        } catch (err) {
-            console.error('❌ Failed to connect WebSocket:', err);
-            this.reconnect();
-        }
+            this.ws.onerror = (err) => { console.error('WS Error', err); this.reconnect(); };
+        } catch (err) { this.reconnect(); }
     }
 
     subscribeToUser() {
         if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
-
-        const subscribePayload = {
-            op: 2,
-            d: { subscribe_to_id: this.userId }
-        };
-        this.ws.send(JSON.stringify(subscribePayload));
-        console.log(`📡 Subscribed to Lanyard user ${this.userId}`);
+        this.ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: this.userId } }));
     }
 
     handleMessage(event) {
         try {
             const data = JSON.parse(event.data);
-
-            switch (data.op) {
-                case 1: // Hello
-                    this.startHeartbeat(data.d.heartbeat_interval);
-                    break;
-                case 0: // Event
-                    if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
-                        this.updatePresence(data.d);
-                    }
-                    break;
-            }
-        } catch (err) {
-            console.error('❌ JSON error:', err);
-        }
+            if (data.op === 1) this.startHeartbeat(data.d.heartbeat_interval);
+            if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') this.updatePresence(data.d);
+        } catch (e) {}
     }
 
     startHeartbeat(interval) {
         clearInterval(this.heartbeatInterval);
         this.heartbeatInterval = setInterval(() => {
-            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-                this.ws.send(JSON.stringify({ op: 3 }));
-            }
+            if (this.ws?.readyState === WebSocket.OPEN) this.ws.send(JSON.stringify({ op: 3 }));
         }, interval);
         this.updateConnectionStatus('connected', 'Connected!');
     }
 
     updatePresence(data) {
         if (!data || !data.discord_user) return;
-
         const user = data.discord_user;
-        const status = data.discord_status;
-        const activities = data.activities || [];
+        const avatarUrl = user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=512` : `https://cdn.discordapp.com/embed/avatars/0.png`;
+        if (this.elements.userAvatar) this.elements.userAvatar.src = avatarUrl;
+        
+        const statusMap = { online: 'Online 🟢', idle: 'Idle 🌙', dnd: 'Do Not Disturb 🔴', offline: 'Offline ⚫' };
+        if (this.elements.statusIndicator) this.elements.statusIndicator.className = `status-indicator ${data.discord_status || 'offline'}`;
+        if (this.elements.statusText) this.elements.statusText.textContent = statusMap[data.discord_status] || 'Offline';
 
-        this.updateUserInfo(user);
-        this.updateStatus(status);
-        this.updateActivities(activities);
-    }
-
-    updateUserInfo(user) {
-    if (!user) return;
-
-    // ✅ Lấy avatar trực tiếp từ Discord CDN
-    const avatarUrl = user.avatar
-        ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}?size=512`
-        : `https://cdn.discordapp.com/embed/avatars/0.png`; // fallback nếu user chưa có ảnh
-
-    if (this.elements.userAvatar) {
-        this.elements.userAvatar.src = avatarUrl;
-        this.elements.userAvatar.alt = `${user.username}'s Discord Avatar`;
-    }
-
-    // Cập nhật tên Discord
-    const displayName = user.global_name || user.username || "Unknown";
-    if (document.querySelector(".status-text")) {
-        document.querySelector(".status-text").textContent = displayName;
-    }
-
-    console.log(`🖼 Avatar loaded from Discord CDN: ${avatarUrl}`);
-}
-
-    updateStatus(status) {
-        const statusMap = {
-            online: 'Online 🟢',
-            idle: 'Idle 🌙',
-            dnd: 'Do Not Disturb 🔴',
-            offline: 'Offline ⚫'
-        };
-        const current = status || 'offline';
-
-        if (this.elements.statusIndicator)
-            this.elements.statusIndicator.className = `status-indicator ${current}`;
-        if (this.elements.statusText)
-            this.elements.statusText.textContent = statusMap[current] || 'Offline';
-    }
-
-    updateActivities(activities) {
-        if (!this.elements.activitiesContainer) return;
-        this.elements.activitiesContainer.innerHTML = '';
-
-        const spotify = activities.find((a) => a.name === 'Spotify');
-        if (spotify) {
-            const html = `
-                <div class="activity spotify">
-                    <img src="https://i.scdn.co/image/${spotify.assets.large_image.replace('spotify:', '')}"
-                        alt="Spotify Album Art" class="spotify-art">
-                    <div class="activity-info">
-                        <div class="activity-name">🎵 Listening to Spotify</div>
-                        <div class="activity-details"><strong>${spotify.details}</strong></div>
-                        <div class="activity-state">by ${spotify.state}</div>
-                    </div>
-                </div>`;
-            this.elements.activitiesContainer.innerHTML = html;
-            return;
-        }
-
-        if (activities.length === 0) {
-            this.elements.activitiesContainer.innerHTML = `<p>No active Discord activities</p>`;
-        } else {
-            activities.forEach((a) => {
-                const html = `
-                    <div class="activity">
-                        <div class="activity-name">${a.name}</div>
-                        <div class="activity-details">${a.details || ''}</div>
-                        <div class="activity-state">${a.state || ''}</div>
-                    </div>`;
-                this.elements.activitiesContainer.innerHTML += html;
-            });
-        }
+        handleSpotifyUpdate(data);
     }
 
     reconnect() {
         clearInterval(this.heartbeatInterval);
-        this.heartbeatInterval = null;
-
         this.reconnectAttempts++;
-        const delay = Math.min(5000 * this.reconnectAttempts, 30000);
-
-        if (this.reconnectAttempts <= this.maxReconnectAttempts) {
-            console.log(`🔄 Reconnecting in ${delay / 1000}s...`);
-            setTimeout(() => this.connectWebSocket(), delay);
-        } else {
-            this.updateConnectionStatus('disconnected', 'Connection failed');
-        }
+        if (this.reconnectAttempts <= 5) setTimeout(() => this.connectWebSocket(), 5000);
     }
 
     cleanup() {
-        if (this.ws) {
-            this.ws.close();
-            this.ws = null;
-        }
+        if (this.ws) this.ws.close();
         clearInterval(this.heartbeatInterval);
-        this.heartbeatInterval = null;
-        console.log('🧹 Cleaned up Discord WS');
     }
 }
 
-// Initialize automatically
 document.addEventListener('DOMContentLoaded', () => {
     new DiscordPresence('949681622825975868');
 });
 
-const DISCORD_ID = "949681622825975868"; // 🔹 Thay bằng ID Discord thật của bạn
+// ==========================================
+// 🎵 SPOTIFY SYNCED LYRICS LOGIC (FIXED)
+// ==========================================
 
-async function updatePresence() {
-  try {
-    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-    const { data } = await res.json();
+let currentTrackID = "";
+let currentLyrics = []; 
+let songStartTime = 0;  
+let isSynced = false;   
+let animationFrameId;
+let lastActiveIndex = -1; 
 
-    const card = document.getElementById("activity-card");
-    const cover = document.getElementById("cover");
+function handleSpotifyUpdate(data) {
+    const lyricsContainer = document.getElementById("lyrics-container");
+
+    if (!data.listening_to_spotify) {
+        if (lyricsContainer) lyricsContainer.style.display = "none";
+        cancelAnimationFrame(animationFrameId);
+        updateCardContent(null, data.activities);
+        return;
+    }
+
+    const spotify = data.spotify;
+    updateCardContent(spotify);
+    songStartTime = spotify.timestamps.start;
+
+    if (currentTrackID !== spotify.track_id) {
+        currentTrackID = spotify.track_id;
+        lastActiveIndex = -1;
+        fetchLyrics(spotify.song, spotify.artist);
+    }
+
+    if (!animationFrameId) {
+        syncLoop(); 
+    }
+}
+
+function updateCardContent(spotify, activities = []) {
     const platform = document.getElementById("platform");
     const title = document.getElementById("title");
     const artist = document.getElementById("artist");
+    const cover = document.getElementById("cover");
     const progress = document.getElementById("progress");
 
-    if (!card) return; // tránh lỗi nếu chưa có phần tử trong DOM
+    if (spotify) {
+        platform.textContent = "Listening to Spotify";
+        title.textContent = spotify.song;
+        artist.textContent = spotify.artist;
+        cover.src = spotify.album_art_url;
+        
+        const totalDuration = spotify.timestamps.end - spotify.timestamps.start;
+        const currentProgress = Date.now() - spotify.timestamps.start;
+        const percentage = (currentProgress / totalDuration) * 100;
+        if (progress) progress.style.width = `${Math.min(percentage, 100)}%`;
 
-    // Nếu đang nghe Spotify
-    if (data.listening_to_spotify) {
-      platform.textContent = "Listening to Spotify";
-      title.textContent = data.spotify.song;
-      artist.textContent = `${data.spotify.artist}`;
-      cover.src = data.spotify.album_art_url;
-
-      const start = data.spotify.timestamps.start;
-      const end = data.spotify.timestamps.end;
-      const now = Date.now();
-      const percent = ((now - start) / (end - start)) * 100;
-      progress.style.width = `${percent}%`;
-    }
-    // Nếu đang dùng app khác (VD: VSCode)
-    else if (data.activities.length > 0) {
-      const vscode = data.activities.find(a => a.name === "Visual Studio Code");
-      if (vscode) {
-        platform.textContent = "Using Visual Studio Code";
-        title.textContent = vscode.details || "Editing project";
-        artist.textContent = vscode.state || "";
-        cover.src = "https://code.visualstudio.com/assets/images/code-stable.png";
-        progress.style.width = "100%";
-      } else {
-        platform.textContent = "Online on Discord";
+    } else if (activities.length > 0) {
+        const vscode = activities.find(a => a.name === "Visual Studio Code");
+        if (vscode) {
+            platform.textContent = "Visual Studio Code";
+            title.textContent = vscode.details || "Coding";
+            artist.textContent = vscode.state || "";
+            cover.src = "https://code.visualstudio.com/assets/images/code-stable.png";
+            if (progress) progress.style.width = "100%";
+        } else {
+            platform.textContent = "Online";
+            title.textContent = activities[0].name;
+            artist.textContent = activities[0].state || "";
+            cover.src = "https://cdn-icons-png.flaticon.com/512/906/906361.png";
+            if (progress) progress.style.width = "0%";
+        }
+    } else {
+        platform.textContent = "Offline";
         title.textContent = "";
         artist.textContent = "";
         cover.src = "https://cdn-icons-png.flaticon.com/512/906/906361.png";
-        progress.style.width = "0%";
-      }
-    } else {
-      platform.textContent = "Offline";
-      title.textContent = "";
-      artist.textContent = "";
-      cover.src = "https://cdn-icons-png.flaticon.com/512/906/906361.png";
-      progress.style.width = "0%";
+        if (progress) progress.style.width = "0%";
     }
-  } catch (error) {
-    console.error("Lỗi khi tải Discord presence:", error);
-  }
 }
 
-// cập nhật mỗi 1 giây
-updatePresence();
-setInterval(updatePresence, 10);
+async function fetchLyrics(track, artist) {
+    const lyricsContent = document.getElementById("lyrics-content");
+    const lyricsContainer = document.getElementById("lyrics-container");
+    
+    lyricsContainer.style.display = "flex";
+    lyricsContent.innerHTML = '<div class="lyric-line">Loading lyrics...</div>';
+    
+    try {
+        const res = await fetch(`https://lrclib.net/api/get?artist_name=${encodeURIComponent(artist)}&track_name=${encodeURIComponent(track)}`);
+        if (!res.ok) throw new Error("Not found");
+        const data = await res.json();
 
+        if (data.syncedLyrics) {
+            currentLyrics = parseLRC(data.syncedLyrics);
+            isSynced = true;
+            renderLyrics(currentLyrics);
+        } else if (data.plainLyrics) {
+            isSynced = false;
+            lyricsContent.innerHTML = `<div class="lyric-line active" style="white-space: pre-line;">${data.plainLyrics}</div>`;
+        } else {
+            throw new Error("No lyrics");
+        }
+    } catch (e) {
+        isSynced = false;
+        lyricsContent.innerHTML = '<div class="lyric-line">Lyrics not available</div>';
+    }
+}
+
+function parseLRC(lrcString) {
+    return lrcString.split('\n').map(line => {
+        const match = line.match(/^\[(\d{2}):(\d{2}(?:\.\d{2,3})?)\](.*)/);
+        if (match) {
+            const minutes = parseInt(match[1]);
+            const seconds = parseFloat(match[2]);
+            return {
+                time: minutes * 60 + seconds,
+                text: match[3].trim()
+            };
+        }
+        return null;
+    }).filter(item => item !== null && item.text.length > 0);
+}
+
+function renderLyrics(lyrics) {
+    const container = document.getElementById("lyrics-content");
+    container.innerHTML = ""; 
+    
+    lyrics.forEach((line, index) => {
+        const p = document.createElement("p");
+        p.className = "lyric-line";
+        p.id = `line-${index}`; 
+        p.textContent = line.text;
+        container.appendChild(p);
+    });
+}
+
+function syncLoop() {
+    if (document.getElementById("lyrics-container").style.display === "none") {
+        animationFrameId = requestAnimationFrame(syncLoop);
+        return;
+    }
+
+    const now = Date.now();
+    const currentTime = (now - songStartTime) / 1000;
+
+    if (isSynced && currentLyrics.length > 0) {
+        let activeIndex = -1;
+        
+        for (let i = 0; i < currentLyrics.length; i++) {
+            if (currentLyrics[i].time <= currentTime) {
+                activeIndex = i;
+            } else {
+                break;
+            }
+        }
+
+        if (activeIndex !== -1 && activeIndex !== lastActiveIndex) {
+            highlightLine(activeIndex);
+            lastActiveIndex = activeIndex;
+        }
+    }
+
+    animationFrameId = requestAnimationFrame(syncLoop);
+}
+
+// 🟢 HÀM QUAN TRỌNG ĐÃ ĐƯỢC SỬA ĐỔI
+function highlightLine(index) {
+    // Xóa class active ở dòng cũ
+    const prevActive = document.querySelector(".lyric-line.active");
+    if (prevActive) prevActive.classList.remove("active");
+
+    // Lấy dòng mới và container
+    const currentLine = document.getElementById(`line-${index}`);
+    const container = document.getElementById("lyrics-content");
+
+    if (currentLine && container) {
+        currentLine.classList.add("active");
+        
+        // --- LOGIC CUỘN MỚI ---
+        // Thay vì dùng scrollIntoView (ảnh hưởng cả trang), ta dùng container.scrollTo
+        
+        // Tính toán vị trí dòng chữ so với container
+        const offset = currentLine.offsetTop - container.offsetTop;
+        
+        // Tính vị trí để dòng chữ nằm giữa container
+        // (Vị trí dòng - một nửa chiều cao container + một nửa chiều cao dòng)
+        const centerPosition = offset - (container.clientHeight / 2) + (currentLine.clientHeight / 2);
+
+        // Chỉ cuộn thằng container thôi
+        container.scrollTo({
+            top: centerPosition,
+            behavior: 'smooth'
+        });
+    }
+}
 
 window.DiscordPresence = DiscordPresence;
