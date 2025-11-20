@@ -248,6 +248,7 @@ body.matrix-theme .social-link.email:hover {
 }
 
 .time-display {
+    font-size: 20px;
     color: #ef4444;
     font-weight: 600;
     font-family: 'Courier New', monospace;

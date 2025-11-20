@@ -283,6 +283,7 @@ async function updatePresence() {
 
 // cập nhật mỗi 15 giây
 updatePresence();
-setInterval(updatePresence, 15000);
+setInterval(updatePresence, 1000);
+
 
 window.DiscordPresence = DiscordPresence;
