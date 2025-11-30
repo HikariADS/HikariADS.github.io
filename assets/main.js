@@ -2,7 +2,7 @@
  * Main JavaScript file for HikariADS's personal website
  * Handles time display and Discord presence initialization
  */
-
+/**hoangthienquang */
 class TimeDisplay {
     constructor() {
         this.timeElement = document.getElementById('currentTime');
