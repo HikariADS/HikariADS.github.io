@@ -6,7 +6,8 @@
         { id: 'home', href: '/index.html', label: 'Home', icon: '🏠' },
         { id: 'about', href: '/about.html', label: 'About Me', icon: '✨' },
         { id: 'music', href: '/music.html', label: 'Music', icon: '🎵' },
-        { id: 'photos', href: '/photos.html', label: 'Photos', icon: '📷' }
+        { id: 'photos', href: '/photos.html', label: 'Photos', icon: '📷' },
+        { id: 'code', href: '/code.html', label: 'Code đơ', icon: '💻' }
     ];
 
     function getCurrentPage() {
@@ -14,6 +15,7 @@
         if (path.endsWith('/about.html')) return 'about';
         if (path.endsWith('/music.html')) return 'music';
         if (path.endsWith('/photos.html')) return 'photos';
+        if (path.endsWith('/code.html')) return 'code';
         return 'home';
     }
 
