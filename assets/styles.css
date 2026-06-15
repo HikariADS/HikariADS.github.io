@@ -1298,7 +1298,7 @@ font-size: 13px; /* to hơn */
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
@@ -1309,7 +1309,6 @@ font-size: 13px; /* to hơn */
     border: 2px solid rgba(237, 112, 55, 0.3);
     text-align: left;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
     overflow: hidden;
 }
 
@@ -1323,17 +1322,32 @@ font-size: 13px; /* to hơn */
     background: rgba(255, 240, 245, 0.25);
 }
 
+.project-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
 .project-emoji {
-    position: absolute;
-    top: 12px;
-    right: 14px;
-    font-size: 1.8rem;
-    opacity: 0.85;
+    font-size: 1.6rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
     transition: transform 0.3s ease;
 }
 
 .project-card:hover .project-emoji {
-    transform: scale(1.2) rotate(12deg);
+    transform: scale(1.15) rotate(-8deg);
+}
+
+.project-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
 }
 
 .project-card h3 {
@@ -1414,27 +1428,25 @@ font-size: 13px; /* to hơn */
     margin-top: 12px;
 }
 
-.project-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
 .project-role {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #ed7037;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 .project-period {
-    font-size: 0.8rem;
-    color: #6b7280;
-    font-weight: 500;
+    font-size: 0.75rem;
+    color: #374151;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(107, 114, 128, 0.25);
+    white-space: nowrap;
+    margin-left: auto;
 }
 
 .project-bullets {
@@ -1504,16 +1516,24 @@ font-size: 13px; /* to hơn */
 
 .experience-meta {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
     flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
+    margin-bottom: 8px;
 }
 
 .experience-meta strong {
     color: #1f2937;
     font-size: 1rem;
+    flex: 1 1 100%;
+}
+
+.experience-meta .project-period {
+    margin-left: 0;
+}
+
+.experience-meta .status-pill {
+    order: 1;
 }
 
 .experience-item p {
@@ -1534,6 +1554,18 @@ font-size: 13px; /* to hơn */
     .soft-skills-row {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .code-page .page-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .section-heading {
+        font-size: 1.15rem;
+    }
 }
 
 @media (max-width: 600px) {
@@ -1552,6 +1584,44 @@ font-size: 13px; /* to hơn */
     .code-badge {
         font-size: 0.78rem;
         padding: 6px 12px;
+    }
+
+    .project-card {
+        padding: 16px;
+    }
+
+    .project-badges {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .project-period {
+        margin-left: 0;
+    }
+
+    .project-card h3 {
+        font-size: 1rem;
+    }
+
+    .heading-cute {
+        display: block;
+        margin-left: 0;
+        margin-top: 4px;
+    }
+
+    .code-footer {
+        font-size: 0.8rem;
+        padding: 12px 8px;
+    }
+
+    .lang-levels {
+        padding: 16px;
+    }
+}
+
+@media (min-width: 901px) {
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -1718,5 +1788,11 @@ font-size: 13px; /* to hơn */
         margin-right: 10px;
         padding-left: 15px;
         padding-right: 15px;
+        padding-top: 20px;
+    }
+
+    .code-page.container.subpage {
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 }
