@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music — HikariADS</title>
+    <meta name="description" content="Nhạc HikariADS đang nghe">
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="bubble-nav" id="bubbleNav" aria-label="Site navigation"></nav>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="./assets/Background.mp4" type="video/mp4">
+    </video>
+
+    <div class="container subpage">
+        <a href="/index.html" class="back-home"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+
+        <div class="page-header">
+            <h1>Music <span class="page-subtitle">音楽</span></h1>
+            <p class="page-desc">Nhạc mình đang nghe & playlist yêu thích</p>
+        </div>
+
+        <div class="status-section">
+            <p>Đang nghe: <span class="status-text">Offline</span></p>
+        </div>
+
+        <div id="activity-card" class="spotify-card">
+            <img id="cover" src="" alt="cover" />
+            <div class="info">
+                <div class="header" id="platform"></div>
+                <div class="title" id="title"></div>
+                <div class="artist" id="artist"></div>
+                <div class="progress-bar"><div class="progress" id="progress"></div></div>
+            </div>
+        </div>
+
+        <div id="lyrics-container" class="lyrics-box" style="display: none;">
+            <h3 class="lyrics-title">Lyrics</h3>
+            <p id="lyrics-content">Waiting for music...</p>
+        </div>
+
+        <hr class="divider">
+
+        <h2 class="section-heading">Playlist yêu thích</h2>
+        <iframe data-testid="embed-iframe" style="border-radius:12px"
+            src="https://open.spotify.com/embed/playlist/05oaZIga1wM8aPyxOyVoQe?utm_source=generator"
+            width="100%" height="352" frameBorder="0" allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"></iframe>
+    </div>
+
+    <script src="/assets/animated-background.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/discord-presence.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.DiscordPresence) {
+                new DiscordPresence('949681622825975868');
+            }
+        });
+    </script>
+</body>
+</html>

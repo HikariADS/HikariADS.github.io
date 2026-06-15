@@ -937,3 +937,259 @@ font-size: 13px; /* to hơn */
     transform: scale(1.05);
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
+
+/* ========== Bubble Navigation ========== */
+.bubble-nav {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bubble-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #1f2937;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 4px 20px rgba(236, 72, 153, 0.2);
+    transition: all 0.3s ease;
+    min-width: 160px;
+}
+
+.bubble-link:hover {
+    transform: translateX(4px) scale(1.03);
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 6px 24px rgba(236, 72, 153, 0.35);
+}
+
+.bubble-link.active {
+    background: rgba(237, 112, 55, 0.25);
+    border-color: #ed7037;
+    box-shadow: 0 4px 20px rgba(237, 112, 55, 0.4);
+}
+
+.bubble-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.bubble-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.bubble-sub {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin-left: auto;
+}
+
+/* ========== Subpages ========== */
+.container.subpage {
+    justify-content: flex-start;
+    padding-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-height: auto;
+}
+
+.back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #ed7037;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    align-self: flex-start;
+    transition: color 0.2s;
+}
+
+.back-home:hover {
+    color: #ec4899;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    color: #1f2937;
+}
+
+.page-subtitle {
+    display: block;
+    font-size: 1rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.page-desc {
+    color: #4b5563;
+    margin-top: 8px;
+    font-size: 1rem;
+}
+
+.section-heading {
+    font-size: 1.3rem;
+    color: #1f2937;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+/* About page */
+.about-profile {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 20px;
+    object-fit: cover;
+    border: 3px solid #ed7037;
+    box-shadow: 0 8px 24px rgba(237, 112, 55, 0.3);
+    flex-shrink: 0;
+}
+
+.about-text p {
+    margin-bottom: 16px;
+    color: #374151;
+    line-height: 1.7;
+}
+
+.about-text a {
+    color: #ed7037;
+    font-weight: 600;
+}
+
+.about-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.detail-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px solid rgba(237, 112, 55, 0.3);
+    text-align: left;
+}
+
+.detail-card h3 {
+    color: #ed7037;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.detail-card p {
+    color: #4b5563;
+    font-size: 0.95rem;
+}
+
+/* Photo gallery */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.photo-card {
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover {
+    transform: translateY(-4px);
+}
+
+.photo-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-card figcaption {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    color: #374151;
+    text-align: left;
+}
+
+.photo-empty {
+    max-width: 600px;
+    margin: 0 auto 24px;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    border: 2px dashed rgba(237, 112, 55, 0.4);
+    color: #4b5563;
+}
+
+.photo-empty code {
+    background: rgba(237, 112, 55, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .bubble-nav {
+        top: 10px;
+        left: 10px;
+        gap: 6px;
+    }
+
+    .bubble-link {
+        min-width: auto;
+        padding: 8px 12px;
+    }
+
+    .bubble-sub {
+        display: none;
+    }
+
+    .about-profile {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .about-details {
+        grid-template-columns: 1fr;
+    }
+
+    .container.subpage {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

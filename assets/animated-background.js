@@ -10,7 +10,7 @@ class AnimatedBackground {
         this.ctx = null;
         this.particles = [];
         this.animationId = null;
-        this.currentEffect = 'particles';
+        this.currentEffect = 'bubbles';
         
         this.init();
     }
@@ -417,17 +417,12 @@ class AnimatedBackground {
     }
 }
 
-// Auto-initialize with particles effect
 let animatedBg = null;
 
-// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     animatedBg = new AnimatedBackground();
+    animatedBg.switchEffect('bubbles');
     window.animatedBg = animatedBg;
-    
-    console.log('🎨 Animated background initialized!');
-    console.log('Available effects: particles, waves, matrix, bubbles');
-    console.log('Switch with: animatedBg.switchEffect("effectName")');
 });
 
 // Export for global use

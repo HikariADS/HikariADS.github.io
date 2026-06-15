@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photos — HikariADS</title>
+    <meta name="description" content="Ảnh HikariADS chụp">
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="bubble-nav" id="bubbleNav" aria-label="Site navigation"></nav>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="./assets/Background.mp4" type="video/mp4">
+    </video>
+
+    <div class="container subpage">
+        <a href="/index.html" class="back-home"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+
+        <div class="page-header">
+            <h1>Photos <span class="page-subtitle">写真</span></h1>
+            <p class="page-desc">Những khoảnh khắc mình chụp được</p>
+        </div>
+
+        <div id="photo-empty" class="photo-empty">
+            <p>Chưa có ảnh nào. Thêm ảnh vào <code>assets/photos/</code> và cập nhật <code>assets/content/photos.json</code> nhé!</p>
+        </div>
+
+        <div id="photo-grid" class="photo-grid"></div>
+    </div>
+
+    <script src="/assets/animated-background.js"></script>
+    <script src="/assets/nav.js"></script>
+    <script src="/assets/photos.js"></script>
+</body>
+</html>

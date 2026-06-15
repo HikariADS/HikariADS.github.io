@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me — HikariADS</title>
+    <meta name="description" content="Mọi thứ về HikariADS">
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="bubble-nav" id="bubbleNav" aria-label="Site navigation"></nav>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="./assets/Background.mp4" type="video/mp4">
+    </video>
+
+    <div class="container subpage">
+        <a href="/index.html" class="back-home"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+
+        <div class="page-header">
+            <h1>About Me <span class="page-subtitle">私について</span></h1>
+        </div>
+
+        <div class="about-profile">
+            <!-- Thay ảnh bằng file của bạn: đặt vào assets/photos/about.jpg rồi sửa src bên dưới -->
+            <img class="about-photo" src="/assets/photos/about.jpg" alt="HikariADS"
+                 onerror="this.style.display='none'">
+            <div class="about-text">
+                <p>
+                    初めまして、私の名前は <span class="highlight">HikariADS</span> です。
+                    私は現在 <span class="highlight">日越大学</span> でコンピュータサイエンスを専攻しています。
+                </p>
+                <p>
+                    Đây là nơi mình chia sẻ thêm về bản thân — sở thích, học tập, và những thứ mình đam mê.
+                    Bạn có thể xem thêm nhạc mình nghe ở trang <a href="/music.html">Music</a>
+                    hoặc ảnh mình chụp ở trang <a href="/photos.html">Photos</a>.
+                </p>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="about-details">
+            <div class="detail-card">
+                <h3><i class="fas fa-graduation-cap"></i> Học vấn</h3>
+                <p>日越大学 — Computer Science (Bachelor)</p>
+            </div>
+            <div class="detail-card">
+                <h3><i class="fas fa-heart"></i> Sở thích</h3>
+                <p>Code, nhạc, chụp ảnh, anime...</p>
+            </div>
+            <div class="detail-card">
+                <h3><i class="fas fa-language"></i> Ngôn ngữ</h3>
+                <p>Tiếng Việt, 日本語, English</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/animated-background.js"></script>
+    <script src="/assets/nav.js"></script>
+</body>
+</html>
