@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music — HikariADS</title>
-    <meta name="description" content="Playlist Spotify của HikariADS">
+    <meta name="description" content="Nhạc tôi làm và playlist của HikariADS — bebiumc trên SoundCloud">
     <link rel="icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="/assets/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,19 +18,119 @@
 
     <div class="container subpage music-page">
         <div class="page-header">
-            <h1>Music <span class="page-subtitle">音楽</span></h1>
+            <h1>Music <span class="page-subtitle">音楽 · 小さな魂</span></h1>
         </div>
 
-        <div class="spotify-full">
-            <iframe
-                src="https://open.spotify.com/embed/playlist/05oaZIga1wM8aPyxOyVoQe?utm_source=generator&theme=0"
-                width="100%"
-                height="800"
-                frameBorder="0"
-                allowfullscreen=""
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"></iframe>
-        </div>
+        <section class="music-hero" aria-label="Giới thiệu nhạc">
+            <a href="/about.html" class="music-avatar-link" title="Xem About Me">
+                <img
+                    class="music-avatar"
+                    src="https://i1.sndcdn.com/avatars-9p01njRzJOTrh4Z8-EdrMiQ-t500x500.jpg"
+                    alt="HikariADS — bebiumc"
+                    onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                <span class="music-avatar-ring" aria-hidden="true"></span>
+                <span class="music-avatar-hint">About me</span>
+            </a>
+
+            <div class="music-intro">
+                <p class="music-poetry">
+                    Một tâm hồn nhỏ giữa biển nhạc bao la — tôi viết từng nốt như những bức thư
+                    không gửi cho ai, để chúng trôi đi và tìm đúng người cần nghe.
+                </p>
+                <p class="music-poetry music-poetry--soft">
+                    Nếu bạn lạc vào đây giữa hàng ngàn giai điệu, hãy dừng lại một chút.
+                    Có thể có một bài nào đó đang chờ bạn, như một ánh sáng mờ giữa đêm.
+                </p>
+                <p class="music-tagline">I Made Music For A Soul Like You ❤️‍🩹</p>
+
+                <a
+                    href="https://soundcloud.com/hoang-thien-quang-707562345"
+                    class="music-sc-btn"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-soundcloud"></i>
+                    Nghe trên SoundCloud — bebiumc
+                </a>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section class="music-section" aria-labelledby="my-music-heading">
+            <h2 id="my-music-heading" class="section-heading">
+                <i class="fas fa-compact-disc"></i> Gợi ý nhạc tôi làm
+            </h2>
+            <p class="music-section-desc">
+                Dưới đây là những track tôi tự sáng tác &amp; đăng lên SoundCloud.
+                Bấm play, hoặc mở profile để khám phá thêm.
+            </p>
+
+            <div class="music-picks">
+                <a
+                    href="https://soundcloud.com/hoang-thien-quang-707562345"
+                    class="music-pick-card"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <span class="music-pick-icon">🌊</span>
+                    <span class="music-pick-title">Giữa biển nhạc</span>
+                    <span class="music-pick-desc">Bắt đầu từ đây — toàn bộ discography trên SoundCloud</span>
+                </a>
+                <a
+                    href="https://soundcloud.com/hoang-thien-quang-707562345"
+                    class="music-pick-card"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <span class="music-pick-icon">🕯️</span>
+                    <span class="music-pick-title">Khi đêm về</span>
+                    <span class="music-pick-desc">Những giai điệu chậm rãi, dành cho lúc bạn cần lặng</span>
+                </a>
+                <a
+                    href="https://soundcloud.com/hoang-thien-quang-707562345"
+                    class="music-pick-card"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <span class="music-pick-icon">💌</span>
+                    <span class="music-pick-title">Thư không gửi</span>
+                    <span class="music-pick-desc">Âm nhạc viết cho một tâm hồn giống bạn</span>
+                </a>
+            </div>
+
+            <div class="soundcloud-embed">
+                <iframe
+                    width="100%"
+                    height="450"
+                    scrolling="no"
+                    frameborder="no"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="bebiumc trên SoundCloud"
+                    src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Fusers%2F1673416904&show_artwork=true&color=%23ff5500">
+                </iframe>
+            </div>
+        </section>
+
+        <hr class="divider thick">
+
+        <section class="music-section" aria-labelledby="playlist-heading">
+            <h2 id="playlist-heading" class="section-heading">
+                <i class="fab fa-spotify"></i> Playlist đang nghe
+            </h2>
+            <p class="music-section-desc">
+                Ngoài nhạc tôi làm, đây là playlist tôi thường mở khi code, học, hoặc lang thang trong đầu.
+            </p>
+
+            <div class="spotify-full">
+                <iframe
+                    src="https://open.spotify.com/embed/playlist/05oaZIga1wM8aPyxOyVoQe?utm_source=generator&theme=0"
+                    width="100%"
+                    height="800"
+                    frameBorder="0"
+                    allowfullscreen=""
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    title="Spotify playlist của HikariADS"></iframe>
+            </div>
+        </section>
     </div>
 
     <script src="/assets/animated-background.js"></script>

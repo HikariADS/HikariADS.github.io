@@ -61,6 +61,9 @@ p{
 .profile-avatar .discord-avatar-container {
     position: relative;
     display: inline-block;
+    width: 120px;
+    height: 120px;
+    line-height: 0;
 }
 
 .profile-avatar .discord-avatar {
@@ -68,9 +71,10 @@ p{
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+    border: 4px solid #5865f2;
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.25);
     transition: transform 0.3s ease;
-    position: relative;
-    z-index: 2;
+    display: block;
 }
 
 .profile-avatar .discord-avatar:hover {
@@ -156,6 +160,10 @@ body.matrix-theme .social-link.instagram:hover {
     color: #00ff41;
 }
 
+body.matrix-theme .social-link.soundcloud:hover {
+    color: #00ff41;
+}
+
 body.matrix-theme .social-link.github:hover {
     color: #00ff41;
 }
@@ -166,15 +174,24 @@ body.matrix-theme .social-link.email:hover {
 
 .profile-avatar .status-indicator {
     position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 24px;
-    height: 24px;
+    bottom: -2px;
+    right: -2px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    background: #747f8d;
-    border: 4px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background-color: #747f8d;
+    border: none;
+    box-shadow:
+        0 0 0 3px rgba(248, 250, 252, 0.95),
+        0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    transition: background-color 0.3s ease;
 }
+
+.profile-avatar .status-indicator.online { background-color: #43b581; }
+.profile-avatar .status-indicator.idle { background-color: #faa61a; }
+.profile-avatar .status-indicator.dnd { background-color: #f04747; }
+.profile-avatar .status-indicator.offline { background-color: #747f8d; }
 
 .header h1 {
     font-size: 1.8rem;
@@ -440,6 +457,10 @@ body.matrix-theme .social-link.email:hover {
     color: #e4405f;
 }
 
+.social-link.soundcloud:hover {
+    color: #ff5500;
+}
+
 .social-link.github:hover {
     color: #24292e;
 }
@@ -646,12 +667,25 @@ body.matrix-theme .social-link.email:hover {
         width: 80px;
         height: 80px;
     }
-    
-    .status-indicator {
-        width: 20px;
-        height: 20px;
-        bottom: 6px;
-        right: 6px;
+
+    .profile-avatar .discord-avatar-container {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-avatar .discord-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-avatar .status-indicator {
+        width: 22px;
+        height: 22px;
+        bottom: -1px;
+        right: -1px;
+        box-shadow:
+            0 0 0 2px rgba(248, 250, 252, 0.95),
+            0 2px 4px rgba(0, 0, 0, 0.15);
     }
 }
 
@@ -1070,6 +1104,224 @@ font-size: 13px; /* to hơn */
 .music-page .spotify-full iframe {
     display: block;
     border-radius: 12px;
+}
+
+/* Music page — hero & SoundCloud */
+.music-hero {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    text-align: left;
+    max-width: 900px;
+    margin: 0 auto 8px;
+    padding: 24px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.music-avatar-link {
+    position: relative;
+    flex-shrink: 0;
+    display: block;
+    text-decoration: none;
+    border-radius: 50%;
+}
+
+.music-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    border: 4px solid #ff5500;
+    box-shadow: 0 6px 24px rgba(255, 85, 0, 0.3);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.music-avatar-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 85, 0, 0.35);
+    animation: musicRingSpin 12s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes musicRingSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.music-avatar-link:hover .music-avatar {
+    transform: scale(1.06);
+    box-shadow: 0 10px 32px rgba(255, 85, 0, 0.45);
+}
+
+.music-avatar-hint {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255, 85, 0, 0.9);
+    opacity: 0;
+    transition: opacity 0.25s ease, bottom 0.25s ease;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.music-avatar-link:hover .music-avatar-hint {
+    opacity: 1;
+    bottom: -14px;
+}
+
+.music-intro {
+    flex: 1;
+    min-width: 0;
+}
+
+.music-poetry {
+    color: #374151;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 12px;
+}
+
+.music-poetry--soft {
+    font-size: 0.98rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.music-tagline {
+    color: #ed7037;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 16px 0;
+    letter-spacing: 0.02em;
+}
+
+.music-sc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #ff5500, #ff7733);
+    box-shadow: 0 6px 20px rgba(255, 85, 0, 0.35);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.music-sc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(255, 85, 0, 0.45);
+}
+
+.music-sc-btn i {
+    font-size: 1.3rem;
+}
+
+.music-section {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.music-section-desc {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin: -8px auto 20px;
+    max-width: 680px;
+    line-height: 1.6;
+}
+
+.section-heading i {
+    margin-right: 8px;
+    color: #ed7037;
+}
+
+.music-picks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.music-pick-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 16px;
+    border-radius: 16px;
+    text-decoration: none;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 85, 0, 0.2);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.music-pick-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 85, 0, 0.5);
+    box-shadow: 0 8px 24px rgba(255, 85, 0, 0.15);
+}
+
+.music-pick-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.music-pick-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.music-pick-desc {
+    font-size: 0.82rem;
+    color: #6b7280;
+    line-height: 1.45;
+}
+
+.soundcloud-embed {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.soundcloud-embed iframe {
+    display: block;
+    border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+    .music-hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 16px;
+    }
+
+    .music-picks {
+        grid-template-columns: 1fr;
+    }
+
+    .music-pick-card {
+        text-align: center;
+        align-items: center;
+    }
 }
 
 /* Code đơ page */
