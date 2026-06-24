@@ -18,6 +18,9 @@ class AnimatedBackground {
     init() {
         this.createCanvas();
         this.setupEventListeners();
+        if (document.body.classList.contains('music-theme')) {
+            this.currentEffect = 'equalizer';
+        }
         this.startAnimation();
     }
     
@@ -339,6 +342,76 @@ class AnimatedBackground {
         }
     }
     
+    // Music page — equalizer bars + floating notes
+    initEqualizer() {
+        this.eqBars = [];
+        const barCount = Math.max(20, Math.floor(this.canvas.width / 14));
+        for (let i = 0; i < barCount; i++) {
+            this.eqBars.push({
+                x: i * 14 + 3,
+                height: Math.random() * 60 + 20,
+                targetHeight: Math.random() * 60 + 20,
+                speed: Math.random() * 0.06 + 0.04
+            });
+        }
+
+        this.musicNotes = [];
+        const noteChars = ['♪', '♫', '♬'];
+        for (let i = 0; i < 14; i++) {
+            this.musicNotes.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                char: noteChars[Math.floor(Math.random() * noteChars.length)],
+                size: Math.random() * 12 + 10,
+                speedY: Math.random() * 0.35 + 0.08,
+                opacity: Math.random() * 0.25 + 0.08,
+                wobble: Math.random() * Math.PI * 2
+            });
+        }
+
+        this.changeTextColor('default');
+    }
+
+    drawEqualizer() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.fillStyle = 'rgba(15, 10, 26, 0.12)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        for (const note of this.musicNotes) {
+            note.y -= note.speedY;
+            note.wobble += 0.025;
+            if (note.y < -24) {
+                note.y = this.canvas.height + 24;
+                note.x = Math.random() * this.canvas.width;
+            }
+
+            const hue = note.char === '♫' ? '255, 85, 0' : '168, 85, 247';
+            this.ctx.font = `${note.size}px Georgia, serif`;
+            this.ctx.fillStyle = `rgba(${hue}, ${note.opacity})`;
+            this.ctx.fillText(note.char, note.x + Math.sin(note.wobble) * 10, note.y);
+        }
+
+        const baseY = this.canvas.height;
+        const maxBarHeight = this.canvas.height * 0.22;
+
+        for (const bar of this.eqBars) {
+            if (Math.random() > 0.92) {
+                bar.targetHeight = Math.random() * maxBarHeight + 12;
+            }
+            bar.targetHeight = Math.max(12, Math.min(maxBarHeight, bar.targetHeight));
+            bar.height += (bar.targetHeight - bar.height) * bar.speed;
+
+            const gradient = this.ctx.createLinearGradient(0, baseY - bar.height, 0, baseY);
+            gradient.addColorStop(0, 'rgba(168, 85, 247, 0.55)');
+            gradient.addColorStop(0.45, 'rgba(255, 85, 0, 0.45)');
+            gradient.addColorStop(1, 'rgba(29, 185, 84, 0.25)');
+
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillRect(bar.x, baseY - bar.height, 9, bar.height);
+        }
+    }
+    
     // Animation loop
     animate() {
         switch (this.currentEffect) {
@@ -354,12 +427,19 @@ class AnimatedBackground {
             case 'bubbles':
                 this.drawBubbles();
                 break;
+            case 'equalizer':
+                this.drawEqualizer();
+                break;
         }
         
         this.animationId = requestAnimationFrame(() => this.animate());
     }
     
     startAnimation() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
+
         // Initialize based on current effect
         switch (this.currentEffect) {
             case 'particles':
@@ -370,6 +450,9 @@ class AnimatedBackground {
                 break;
             case 'bubbles':
                 this.initBubbles();
+                break;
+            case 'equalizer':
+                this.initEqualizer();
                 break;
             case 'waves':
                 this.changeTextColor('default'); // Reset to default colors
@@ -421,7 +504,11 @@ let animatedBg = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     animatedBg = new AnimatedBackground();
-    animatedBg.switchEffect('bubbles');
+    if (document.body.classList.contains('music-theme')) {
+        animatedBg.switchEffect('equalizer');
+    } else {
+        animatedBg.switchEffect('bubbles');
+    }
     window.animatedBg = animatedBg;
 });
 

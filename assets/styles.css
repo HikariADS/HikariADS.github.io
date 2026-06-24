@@ -1386,6 +1386,148 @@ font-size: 13px; /* to hơn */
     border-radius: 12px;
 }
 
+/* ========== Music Theme (trang Music) ========== */
+body.music-theme {
+    background: linear-gradient(160deg, #0c0618 0%, #1a0f2e 45%, #12081f 100%);
+    color: #e9e0ff;
+}
+
+body.music-theme #bg-video {
+    filter: brightness(0.28) saturate(1.5) hue-rotate(255deg) contrast(1.1);
+}
+
+body.music-theme .container,
+body.music-theme .container.subpage {
+    background: rgba(12, 8, 24, 0.72);
+    border-color: rgba(255, 85, 0, 0.55);
+    box-shadow:
+        0 0 40px rgba(168, 85, 247, 0.25),
+        0 0 80px rgba(255, 85, 0, 0.12),
+        inset 0 0 60px rgba(168, 85, 247, 0.06);
+}
+
+body.music-theme .page-header h1 {
+    background: linear-gradient(90deg, #ff5500, #ffb347, #a855f7, #1db954);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 300%;
+    animation: musicTitleGlow 8s ease infinite;
+}
+
+@keyframes musicTitleGlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+body.music-theme .page-subtitle {
+    color: rgba(233, 224, 255, 0.65);
+    -webkit-text-fill-color: rgba(233, 224, 255, 0.65);
+}
+
+body.music-theme .divider {
+    background: linear-gradient(90deg, transparent, #ff5500, #a855f7, #1db954, transparent);
+    box-shadow: 0 0 12px rgba(255, 85, 0, 0.35);
+}
+
+body.music-theme .divider.thick {
+    background: linear-gradient(90deg, transparent, #ff5500, #a855f7, #1db954, transparent);
+    box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+}
+
+body.music-theme .music-hero {
+    background: rgba(20, 12, 36, 0.75);
+    border-color: rgba(168, 85, 247, 0.35);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+body.music-theme .music-poetry {
+    color: #e9e0ff;
+}
+
+body.music-theme .music-poetry--soft {
+    color: rgba(233, 224, 255, 0.6);
+}
+
+body.music-theme .music-tagline {
+    color: #ffb347;
+}
+
+body.music-theme .section-heading {
+    color: #f3e8ff;
+}
+
+body.music-theme .section-heading i {
+    color: #ff5500;
+}
+
+body.music-theme .music-section-desc {
+    color: rgba(233, 224, 255, 0.55);
+}
+
+body.music-theme .music-pick-card {
+    background: rgba(30, 18, 50, 0.65);
+    border-color: rgba(168, 85, 247, 0.35);
+}
+
+body.music-theme .music-pick-card:hover {
+    border-color: rgba(255, 85, 0, 0.6);
+    box-shadow: 0 8px 28px rgba(255, 85, 0, 0.2);
+}
+
+body.music-theme .music-pick-title {
+    color: #f3e8ff;
+}
+
+body.music-theme .music-pick-desc {
+    color: rgba(233, 224, 255, 0.55);
+}
+
+body.music-theme .music-avatar {
+    border-color: #ff5500;
+    box-shadow:
+        0 0 20px rgba(255, 85, 0, 0.45),
+        0 0 40px rgba(168, 85, 247, 0.25);
+}
+
+body.music-theme .music-avatar-ring {
+    border-color: rgba(168, 85, 247, 0.5);
+}
+
+body.music-theme .soundcloud-embed,
+body.music-theme .music-page .spotify-full {
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        0 0 24px rgba(255, 85, 0, 0.15);
+}
+
+body.music-theme .menu-hamburger {
+    background: rgba(20, 12, 36, 0.75);
+    border-color: rgba(255, 85, 0, 0.35);
+}
+
+body.music-theme .hamburger-line {
+    background: rgba(255, 181, 71, 0.9);
+}
+
+body.music-theme .menu-dropdown {
+    background: rgba(18, 10, 32, 0.95);
+    border-color: rgba(168, 85, 247, 0.35);
+}
+
+body.music-theme .menu-title {
+    color: #f3e8ff;
+}
+
+body.music-theme .menu-item {
+    color: rgba(233, 224, 255, 0.75);
+}
+
+body.music-theme .menu-item:hover,
+body.music-theme .menu-item.active {
+    background: rgba(255, 85, 0, 0.15);
+    color: #ffb347;
+}
+
 @media (max-width: 768px) {
     .music-hero {
         flex-direction: column;
