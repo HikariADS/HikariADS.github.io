@@ -22,15 +22,20 @@
         </div>
 
         <section class="music-hero" aria-label="Giới thiệu nhạc">
-            <a href="/about.html" class="music-avatar-link" title="Xem About Me">
-                <img
-                    class="music-avatar"
-                    src="https://i1.sndcdn.com/avatars-9p01njRzJOTrh4Z8-EdrMiQ-t500x500.jpg"
-                    alt="HikariADS — bebiumc"
-                    onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
-                <span class="music-avatar-ring" aria-hidden="true"></span>
-                <span class="music-avatar-hint">About me</span>
-            </a>
+            <div class="music-avatar-wrap">
+                <div class="music-avatar-container">
+                    <span class="music-note music-note--1" aria-hidden="true">♪</span>
+                    <span class="music-note music-note--2" aria-hidden="true">♫</span>
+                    <span class="music-note music-note--3" aria-hidden="true">🎵</span>
+                    <span class="music-avatar-glow" aria-hidden="true"></span>
+                    <img
+                        class="music-avatar"
+                        id="userAvatar"
+                        src="https://cdn.discordapp.com/embed/avatars/0.png"
+                        alt="HikariADS — bebiumc">
+                    <span class="music-avatar-ring" aria-hidden="true"></span>
+                </div>
+            </div>
 
             <div class="music-intro">
                 <p class="music-poetry">
@@ -135,5 +140,6 @@
 
     <script src="/assets/animated-background.js"></script>
     <script src="/assets/nav.js"></script>
+    <script src="/assets/discord-presence.js"></script>
 </body>
 </html>
